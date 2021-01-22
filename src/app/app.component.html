@@ -1,0 +1,68 @@
+<div *ngIf="courses.length > 0">
+	List of courses
+</div>
+
+<div *ngIf="courses.length == 0">
+	No courses yet
+</div>
+
+<!-- Alternative -->
+
+<div *ngIf="courses.length > 0; then CoursesList else noCourses">
+</div>
+
+<ng-template #CoursesList>
+	List of courses 2
+</ng-template>
+
+<ng-template #noCourses>
+	No courses 2
+</ng-template>
+
+
+<!-- Using hidden 
+hidden vs ngIf - in hidden, element is not removed from dom, just hidden. In ngIf, it is removed if condition is false
+
+in ngIf, null, "", 0 , undefined -> all equate to false.
+
+template tag is not rendered on the screen unless it is called.
+
+consider using ngIf for larger element trees; use hidden for toggle
+ -->
+<div [hidden]="courses.length > 0">
+	List of courses 3
+</div>
+
+<div [hidden]="courses.length == 0">
+	No courses 3
+	<div>
+
+		<!-- ng Switch case -->
+
+		<ul class="nav nav-pills">
+			<li [class.active]="viewMode=='map'"><a (click)="viewMode='map'">Map View</a></li>
+			<li [class.active]="viewMode=='list'"><a (click)="viewMode='list'">List View</a></li>
+		</ul>
+		<div [ngSwitch]="viewMode">
+			<div *ngSwitchCase="'map'">Map View Content</div>
+			<div *ngSwitchCase="'list'">List View Content</div>
+			<div *ngSwitchDefault>Otherwise</div>
+		</div>
+
+		<!-- ng For -->
+		<ul>
+			<li *ngFor="let course of courses_arr; even as isEven">
+				{{course.name}}
+				<span *ngIf="isEven">(EVEN)</span>
+			</li>
+		</ul>
+
+		<!-- ngFor and change detection  -->
+
+		<button (click)="onAdd()">Add</button>
+		<ul>
+			<li *ngFor="let course of courses_arr">
+				{{course.name}}
+				<button (click)="onRemove(course)">Remove</button>
+			</li>
+		</ul>
